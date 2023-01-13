@@ -19,7 +19,7 @@ apr_status_t input_filter(ap_filter_t *f, apr_bucket_brigade *pbbOut,
     {
         ap_log_error(APLOG_MARK, APLOG_ERR | APLOG_NOERRNO, 0, f->r->server,
                 "ModSecurity: Internal Error: msr is null in input filter.");
-        ap_remove_output_filter(f);
+        ap_remove_input_filter(f);
         return send_error_bucket(msr, f, HTTP_INTERNAL_SERVER_ERROR);
     }
 
@@ -38,14 +38,22 @@ apr_status_t input_filter(ap_filter_t *f, apr_bucket_brigade *pbbOut,
         apr_bucket *pbktOut;
         const char *data;
         apr_size_t len;
-        apr_size_t n;
         int it;
 
         if (APR_BUCKET_IS_EOS(pbktIn))
         {
             APR_BUCKET_REMOVE(pbktIn);
             APR_BRIGADE_INSERT_TAIL(pbbOut, pbktIn);
-            break;
+      
+			msc_process_request_body(msr->t);
+			it = process_intervention(msr->t, r);
+			if (it != N_INTERVENTION_STATUS)
+			{
+				ap_remove_input_filter(f);
+				return send_error_bucket(msr, f, it);
+			}
+			
+			break;
         }
 
         ret=apr_bucket_read(pbktIn, &data, &len, block);
@@ -55,20 +63,12 @@ apr_status_t input_filter(ap_filter_t *f, apr_bucket_brigade *pbbOut,
         }
 
         msc_append_request_body(msr->t, data, len);
-        it = process_intervention(msr->t, r);
-        if (it != N_INTERVENTION_STATUS)
-        {
-            ap_remove_output_filter(f);
-            return send_error_bucket(msr, f, it);
-        }
-
-        // FIXME: Now we should have the body. Is this sane?
-        msc_process_request_body(msr->t);
-
+        
         pbktOut = apr_bucket_heap_create(data, len, 0, c->bucket_alloc);
         APR_BRIGADE_INSERT_TAIL(pbbOut, pbktOut);
         apr_bucket_delete(pbktIn);
     }
+	
     return APR_SUCCESS;
 }
 
