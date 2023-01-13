@@ -75,6 +75,7 @@ apr_status_t input_filter(ap_filter_t *f, apr_bucket_brigade *pbbOut,
 
 apr_status_t output_filter(ap_filter_t *f, apr_bucket_brigade *bb_in)
 {
+	size_t test;
     request_rec *r = f->r;
     msc_t *msr = (msc_t *)f->ctx;
 
@@ -88,7 +89,7 @@ apr_status_t output_filter(ap_filter_t *f, apr_bucket_brigade *bb_in)
     }
 
     /* response headers */
-    {
+    if(msc_get_response_body_length(msr->t) == 0) {
         const apr_array_header_t *arr = NULL;
         const apr_table_entry_t *te = NULL;
         int i, it;
@@ -110,6 +111,11 @@ apr_status_t output_filter(ap_filter_t *f, apr_bucket_brigade *bb_in)
             const char *val = te[i].val;
             msc_add_response_header(msr->t, key, val);
         }
+		
+		// Append Content-type
+		if (r->content_type != NULL) {
+			msc_add_response_header(msr->t, "content-type", r->content_type);
+		}
 
         msc_process_response_headers(msr->t, r->status, "HTTP 1.1");
 
@@ -133,15 +139,22 @@ apr_status_t output_filter(ap_filter_t *f, apr_bucket_brigade *bb_in)
             const char *data;
             apr_size_t len;
             apr_bucket_read(pbktIn, &data, &len, APR_BLOCK_READ);
-            msc_append_response_body(msr->t, data, len);
-        }
-        msc_process_response_body(msr->t);
+			
+			if(len == 0) {
+				msc_process_response_body(msr->t);
 
-        it = process_intervention(msr->t, r);
-        if (it != N_INTERVENTION_STATUS)
-        {
-            ap_remove_output_filter(f);
-            return send_error_bucket(msr, f, it);
+				it = process_intervention(msr->t, r);
+				if (it != N_INTERVENTION_STATUS)
+				{
+					ap_remove_output_filter(f);
+					return send_error_bucket(msr, f, it);
+				}
+				
+			}else{
+				
+				msc_append_response_body(msr->t, data, len);
+				
+			}
         }
     }
 
