@@ -149,15 +149,11 @@ apr_status_t output_filter(ap_filter_t *f, apr_bucket_brigade *bb_in)
 					ap_remove_output_filter(f);
 					return send_error_bucket(msr, f, it);
 				}
-				
 			}else{
-				
 				msc_append_response_body(msr->t, data, len);
-				
 			}
         }
     }
 
     return ap_pass_brigade(f->next, bb_in);
 }
-
