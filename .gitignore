@@ -8,6 +8,7 @@
 .libs/*
 src/.libs/*
 t/htdocs/index.html
+t/conf/modules.conf
 /Makefile
 /Makefile.in
 /aclocal.m4

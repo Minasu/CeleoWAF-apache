@@ -1,5 +1,5 @@
 
-#include "mod_security3.h"
+#include "mod_celeowaf.h"
 #include "msc_config.h"
 #include "msc_filters.h"
 
@@ -7,7 +7,7 @@
 const command_rec module_directives[] =
 {
     AP_INIT_TAKE1(
-        "modsecurity",
+        "celeowaf",
         msc_config_modsec_state,
         NULL,
         RSRC_CONF | ACCESS_CONF,
@@ -15,7 +15,7 @@ const command_rec module_directives[] =
     ),
 
     AP_INIT_TAKE1(
-        "modsecurity_rules",
+        "celeowaf_rules",
         msc_config_load_rules,
         NULL,
         RSRC_CONF | ACCESS_CONF,
@@ -23,19 +23,19 @@ const command_rec module_directives[] =
     ),
 
     AP_INIT_TAKE1(
-        "modsecurity_rules_file",
+        "celeowaf_rules_file",
         msc_config_load_rules_file,
         NULL,
         RSRC_CONF | ACCESS_CONF,
-        "Load ModSecurity rules from a file"
+        "Load CeleoWAF rules from a file"
     ),
 
     AP_INIT_TAKE2(
-        "modsecurity_rules_remote",
+        "celeowaf_rules_remote",
         msc_config_load_rules_remote,
         NULL,
         RSRC_CONF | ACCESS_CONF,
-        "Load ModSecurity rules from a remote server"
+        "Load CeleoWAF rules from a remote server"
     ),
 
     {NULL}
@@ -57,7 +57,7 @@ static const char *msc_config_modsec_state(cmd_parms *cmd, void *_cnf,
     }
     else
     {
-        return "ModSecurity state must be either 'On' or 'Off'";
+        return "CeleoWAF state must be either 'On' or 'Off'";
     }
 
     return NULL;
@@ -128,7 +128,7 @@ void *msc_hook_create_config_directory(apr_pool_t *mp, char *path)
     }
 #if 0
     ap_log_perror(APLOG_MARK, APLOG_STARTUP|APLOG_NOERRNO, 0, mp,
-        "ModSecurity: Created directory config for path: %s [%pp]", path, cnf);
+        "CeleoWAF: Created directory config for path: %s [%pp]", path, cnf);
 #endif
 
     cnf->rules_set = msc_create_rules_set();
@@ -138,7 +138,7 @@ void *msc_hook_create_config_directory(apr_pool_t *mp, char *path)
     }
 #if 0
     ap_log_perror(APLOG_MARK, APLOG_STARTUP|APLOG_NOERRNO, 0, mp,
-        "ModSecurity: Config for path: %s is at: %pp", path, cnf);
+        "CeleoWAF: Config for path: %s is at: %pp", path, cnf);
 #endif
 
 end:
@@ -159,7 +159,7 @@ void *msc_hook_merge_config_directory(apr_pool_t *mp, void *parent,
         int ret;
 #if 0
         ap_log_perror(APLOG_MARK, APLOG_STARTUP|APLOG_NOERRNO, 0, mp,
-            "ModSecurity: Merge parent %pp [%s] child %pp [%s]" \
+            "CeleoWAF: Merge parent %pp [%s] child %pp [%s]" \
             "into: %pp", cnf_p,
             cnf_p->name_for_debug,
             child, cnf_c->name_for_debug, cnf_new);
@@ -170,7 +170,7 @@ void *msc_hook_merge_config_directory(apr_pool_t *mp, void *parent,
         if (ret < 0)
         {
             ap_log_perror(APLOG_MARK, APLOG_STARTUP|APLOG_NOERRNO, 0, mp,
-                "ModSecurity: Rule merge failed: %s", error);
+                "CeleoWAF: Rule merge failed: %s", error);
             return NULL;
         }
 
@@ -178,19 +178,19 @@ void *msc_hook_merge_config_directory(apr_pool_t *mp, void *parent,
         if (ret < 0)
         {
             ap_log_perror(APLOG_MARK, APLOG_STARTUP|APLOG_NOERRNO, 0, mp,
-                "ModSecurity: Rule merge failed: %s", error);
+                "CeleoWAF: Rule merge failed: %s", error);
             return NULL;
         }
 #if 0
         ap_log_perror(APLOG_MARK, APLOG_STARTUP|APLOG_NOERRNO, 0, mp,
-                "ModSecurity: Merge OK");
+                "CeleoWAF: Merge OK");
 #endif
     }
     else if (cnf_c && !cnf_p)
     {
 #if 0
         ap_log_perror(APLOG_MARK, APLOG_STARTUP|APLOG_NOERRNO, 0, mp,
-            "ModSecurity: Merge parent -NULL- [-NULL-] child %pp [%s]",
+            "CeleoWAF: Merge parent -NULL- [-NULL-] child %pp [%s]",
             cnf_c, cnf_c->name_for_debug);
 #endif
     }
@@ -198,7 +198,7 @@ void *msc_hook_merge_config_directory(apr_pool_t *mp, void *parent,
     {
 #if 0
         ap_log_perror(APLOG_MARK, APLOG_STARTUP|APLOG_NOERRNO, 0, mp,
-            "ModSecurity: Merge parent %pp [%s] child -NULL- [-NULL-]",
+            "CeleoWAF: Merge parent %pp [%s] child -NULL- [-NULL-]",
             cnf_p, cnf_p->name_for_debug);
 #endif
     }

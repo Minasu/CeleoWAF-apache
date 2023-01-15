@@ -18,7 +18,7 @@ apr_status_t input_filter(ap_filter_t *f, apr_bucket_brigade *pbbOut,
     if (msr == NULL)
     {
         ap_log_error(APLOG_MARK, APLOG_ERR | APLOG_NOERRNO, 0, f->r->server,
-                "ModSecurity: Internal Error: msr is null in input filter.");
+                "CeleoWAF: Internal Error: msr is null in input filter.");
         ap_remove_input_filter(f);
         return send_error_bucket(msr, f, HTTP_INTERNAL_SERVER_ERROR);
     }
@@ -83,7 +83,7 @@ apr_status_t output_filter(ap_filter_t *f, apr_bucket_brigade *bb_in)
     if (msr == NULL)
     {
         ap_log_error(APLOG_MARK, APLOG_ERR | APLOG_NOERRNO, 0, f->r->server,
-                "ModSecurity: Internal Error: msr is null in output filter.");
+                "CeleoWAF: Internal Error: msr is null in output filter.");
         ap_remove_output_filter(f);
         return send_error_bucket(msr, f, HTTP_INTERNAL_SERVER_ERROR);
     }

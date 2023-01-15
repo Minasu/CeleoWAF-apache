@@ -16,7 +16,7 @@
 		SecRule REQUEST_URI "test.txt" "id:500241"
 	),
 	match_log => {
-		error => [ qr/ModSecurity: Access denied with code 500 \(phase 1\)/, 1 ],
+		error => [ qr/CeleoWAF: Access denied with code 500 \(phase 1\)/, 1 ],
 	},
 	match_response => {
 		status => qr/^500$/,
@@ -37,7 +37,7 @@
 		SecAction initcol:ip=%{REMOTE_ADDR},setvar:ip.dummy=1,pass,id:500085
 	),
 	match_log => {
-		error => [ qr/ModSecurity: Warning. Unconditional match in SecAction\./, 1 ],
+		error => [ qr/CeleoWAF: Warning. Unconditional match in SecAction\./, 1 ],
 	},
 	match_file => {
 		"$ENV{DATA_DIR}/ip.pag" => qr/\x00\x06dummy\x00\x00\x021\x00/,

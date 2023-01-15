@@ -43,7 +43,7 @@ test:
 
 
 install-exec-hook: $(pkglib_LTLIBRARIES)
-	@APXS@ -i -n mod_security3 ./src/.libs/mod_security3.so
+	@APXS@ -i -n mod_celeowaf ./src/.libs/mod_celeowaf.so
 
 
 .PHONY: all

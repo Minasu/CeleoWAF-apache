@@ -56,7 +56,7 @@
         SecRule ARGS:test "value" "deny,status:403,id:500033"
 	),
 	match_log => {
-		error => [ qr/ModSecurity: /, 1 ],
+		error => [ qr/CeleoWAF: /, 1 ],
 		debug => [ qr/Rule [0-9a-f]+: SecRule "ARGS:test" "\@rx value" "phase:2,deny,status:403,id:500033"$/m, 1 ],
 	},
 	match_response => {
@@ -79,7 +79,7 @@
         SecRule REQUEST_METHOD "\@streq GET"
 	),
 	match_log => {
-		error => [ qr/ModSecurity: /, 1 ],
+		error => [ qr/CeleoWAF: /, 1 ],
 		debug => [ qr/Rule [0-9a-f]+: SecRule "ARGS:test" "\@rx value" "phase:2,log,noauditlog,tag:foo,chain,deny,status:403,id:500034"\r?\n.*Rule [0-9a-f]+:/ ]
 	},
 	match_response => {

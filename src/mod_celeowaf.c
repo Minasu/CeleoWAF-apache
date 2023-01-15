@@ -1,7 +1,7 @@
 
 #include <stdio.h>
 
-#include "mod_security3.h"
+#include "mod_celeowaf.h"
 #include "msc_utils.h"
 #include "msc_config.h"
 
@@ -11,7 +11,7 @@
 msc_global *msc_apache;
 
 
-void modsecurity_log_cb(void *log, const void* data)
+void celeowaf_log_cb(void *log, const void* data)
 {
     const char *msg;
     if (log == NULL || data == NULL) {
@@ -35,7 +35,7 @@ void modsecurity_log_cb(void *log, const void* data)
 
 int process_intervention (Transaction *t, request_rec *r)
 {
-    ModSecurityIntervention intervention;
+    CeleoWAFIntervention intervention;
     intervention.status = N_INTERVENTION_STATUS;
     intervention.url = NULL;
     intervention.log = NULL;
@@ -73,7 +73,7 @@ int process_intervention (Transaction *t, request_rec *r)
 
 
 /*
- * Called only once. Used to initialise the ModSecurity
+ * Called only once. Used to initialise the CeleoWAF
  *
  */
 int msc_apache_init(apr_pool_t *mp)
@@ -90,7 +90,7 @@ int msc_apache_init(apr_pool_t *mp)
 
     apr_pool_cleanup_register(mp, NULL, msc_module_cleanup, apr_pool_cleanup_null);
 
-    msc_set_log_cb(msc_apache->modsec, modsecurity_log_cb);
+    msc_set_log_cb(msc_apache->modsec, celeowaf_log_cb);
 
     return 0;
 
@@ -100,7 +100,7 @@ err_no_mem:
 
 
 /*
- * Called only once. Used to cleanup ModSecurity
+ * Called only once. Used to cleanup CeleoWAF
  *
  */
 int msc_apache_cleanup()
@@ -208,7 +208,7 @@ static int msc_hook_pre_config(apr_pool_t *mp, apr_pool_t *mp_log,
     apr_pool_t *mp_temp)
 {
     void *data = NULL;
-    const char *key = "modsecurity-pre-config-init-flag";
+    const char *key = "celeowaf-pre-config-init-flag";
     int first_time = 0;
 
     /* Figure out if we are here for the first time */
@@ -231,7 +231,7 @@ static int msc_hook_pre_config(apr_pool_t *mp, apr_pool_t *mp_log,
     if (ret == -1)
     {
         ap_log_error(APLOG_MARK, APLOG_STARTUP, 0, NULL,
-                "ModSecurity: Failed to initialise.");
+                "CeleoWAF: Failed to initialise.");
         return HTTP_INTERNAL_SERVER_ERROR;
     }
 
@@ -243,7 +243,7 @@ static int msc_hook_post_config(apr_pool_t *mp, apr_pool_t *mp_log,
     apr_pool_t *mp_temp, server_rec *s)
 {
     void *data = NULL;
-    const char *key = "modsecurity-post-config-init-flag";
+    const char *key = "celeowaf-post-config-init-flag";
     int first_time = 0;
 
     /* Figure out if we are here for the first time */
@@ -262,7 +262,7 @@ static int msc_hook_post_config(apr_pool_t *mp, apr_pool_t *mp_log,
 
     // Code to run only at the very first call.
     ap_log_error(APLOG_MARK, APLOG_NOTICE | APLOG_NOERRNO, 0, s,
-                "ModSecurity: %s configured.", MSC_APACHE_CONNECTOR);
+                "CeleoWAF: %s configured.", MSC_APACHE_CONNECTOR);
 
     return OK;
 }
@@ -340,7 +340,7 @@ static int hook_request_early(request_rec *r) {
 
 /**
  * Invoked as the first hook in the handler chain, this function
- * executes the second phase of ModSecurity request processing.
+ * executes the second phase of CeleoWAF request processing.
  */
 static int hook_request_late(request_rec *r)
 {
@@ -449,7 +449,7 @@ static void hook_insert_filter(request_rec *r)
 
 #if 1
     /* Add the input filter, but only if we need it to run. */
-    ap_add_input_filter("MODSECURITY_IN", msr, r, r->connection);
+    ap_add_input_filter("CELEOWAF_IN", msr, r, r->connection);
 #endif
 
     /* The output filters only need to be added only once per transaction
@@ -461,7 +461,7 @@ static void hook_insert_filter(request_rec *r)
     }
 
 
-    ap_add_output_filter("MODSECURITY_OUT", msr, r, r->connection);
+    ap_add_output_filter("CELEOWAF_OUT", msr, r, r->connection);
 }
 
 
@@ -578,11 +578,11 @@ static void msc_register_hooks(apr_pool_t *pool)
     ap_hook_log_transaction(hook_log_transaction, NULL, transaction_afterme_list, APR_HOOK_MIDDLE);
 
     /* request body */
-    ap_register_input_filter("MODSECURITY_IN", input_filter,
+    ap_register_input_filter("CELEOWAF_IN", input_filter,
         NULL, AP_FTYPE_CONTENT_SET);
 
     /* response body */
-    ap_register_output_filter("MODSECURITY_OUT", output_filter,
+    ap_register_output_filter("CELEOWAF_OUT", output_filter,
         NULL, AP_FTYPE_CONTENT_SET - 3);
 }
 

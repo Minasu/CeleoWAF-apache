@@ -39,7 +39,7 @@ my $TOTAL = 0;
 my $BUFSIZ = 32768;
 my %C = ();
 my %FILE = ();
-my $UA_NAME = "ModSecurity Regression Tests/1.2.3";
+my $UA_NAME = "CeleoWAF Regression Tests/1.2.3";
 my $UA = LWP::UserAgent->new;
 $UA->agent($UA_NAME);
 
@@ -70,8 +70,8 @@ sub usage {
 Usage: $SCRIPT [options] [file [N]]
 
  Options:
-  -A file   Specify ModSecurity audit log to read.
-  -D file   Specify ModSecurity debug log to read.
+  -A file   Specify CeleoWAF audit log to read.
+  -D file   Specify CeleoWAF debug log to read.
   -E file   Specify Apache httpd error log to read.
   -C file   Specify Apache httpd base conf file to generate/reload.
   -H path   Specify Apache httpd htdocs path.
@@ -207,7 +207,7 @@ sub runfile {
             print CONF (ref $t{conf} eq "CODE" ? eval { &{$t{conf}} } : $t{conf});
             msg("$@") if ($@);
             close CONF;
-            $httpd_up = httpd_start(\%t, "modsecurity_rules_file $conf_fn") ? 0 : 1;
+            $httpd_up = httpd_start(\%t, "celeowaf_rules_file $conf_fn") ? 0 : 1;
         }
         else {
             $httpd_up = httpd_start(\%t) ? 0 : 1;
@@ -619,7 +619,7 @@ sub httpd_start {
     # Look for startup msg
     unless (defined match_log("error", qr/resuming normal operations/, 60, "Waiting on httpd to start: ")) {
         vrb(join(" ", map { quote_shell($_) } @p));
-        vrb(match_log("error", qr/(^.*ModSecurity: .*)/sm, 10));
+        vrb(match_log("error", qr/(^.*CeleoWAF: .*)/sm, 10));
         msg("Httpd server failed to start.");
         httpd_stop();
         return -1;

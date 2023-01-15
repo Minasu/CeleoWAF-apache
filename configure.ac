@@ -1,5 +1,5 @@
 
-AC_INIT([ModSecurity-Apache], [0.01],[support@modsecurity.org])
+AC_INIT([CeleoWAF-Apache], [0.01],[support@celeowaf.org])
 AC_PREREQ(2.68)
 AC_CONFIG_SRCDIR([LICENSE])
 AC_CONFIG_MACRO_DIR([build])

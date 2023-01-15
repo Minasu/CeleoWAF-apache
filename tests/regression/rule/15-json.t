@@ -15,7 +15,7 @@
 		SecRule ARGS:foo "bar" "id:'200441',phase:3,log"
 	),
 	match_log => {
-		error => [ qr/ModSecurity: Warning. Pattern match "bar" at ARGS:foo.|ModSecurity: JSON support was not enabled/s, 1 ],
+		error => [ qr/CeleoWAF: Warning. Pattern match "bar" at ARGS:foo.|CeleoWAF: JSON support was not enabled/s, 1 ],
 		debug => [ qr/Adding JSON argument 'foo' with value 'bar'|JSON support was not enabled/, 1 ],
 	},
 	match_response => {

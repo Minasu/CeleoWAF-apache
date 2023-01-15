@@ -4,8 +4,8 @@ git clean -xfdi
 git submodule foreach --recursive git clean -xfdi
 
 VERSION=`git describe --tags`
-DIR_NAME="modsecurity-apache-$VERSION"
-TAR_NAME="modsecurity-apache-$VERSION.tar.gz"
+DIR_NAME="celeowaf-apache-$VERSION"
+TAR_NAME="celeowaf-apache-$VERSION.tar.gz"
 
 MY_DIR=${PWD##*/}
 

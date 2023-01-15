@@ -1,7 +1,7 @@
 ### Base configuration for starting Apache httpd
 
 # TODO: Need to have these configurable
-LoadModule security3_module @MSC_BASE_DIR@/src/.libs/mod_security3.so
+LoadModule security3_module @MSC_BASE_DIR@/src/.libs/mod_celeowaf.so
 
 <IfModule !mod_unixd.c>
 LoadModule unixd_module @APXS_LIBEXECDIR@/mod_unixd.so

@@ -13,7 +13,7 @@
 		SecAction "phase:1,deny,id:500034"
 	),
 	match_log => {
-		error => [ qr/ModSecurity: Warning. Unconditional match in SecAction/, 1 ],
+		error => [ qr/CeleoWAF: Warning. Unconditional match in SecAction/, 1 ],
 	},
 	match_response => {
 		status => qr/^403$/,
@@ -34,7 +34,7 @@
 		SecAction "phase:2,deny,id:500036"
 	),
 	match_log => {
-		error => [ qr/ModSecurity: Warning. Unconditional match in SecAction/, 1 ],
+		error => [ qr/CeleoWAF: Warning. Unconditional match in SecAction/, 1 ],
 	},
 	match_response => {
 		status => qr/^403$/,
@@ -57,7 +57,7 @@
 		SecAction "phase:3,deny,id:500038"
 	),
 	match_log => {
-		error => [ qr/ModSecurity: Warning. Unconditional match in SecAction/, 1 ],
+		error => [ qr/CeleoWAF: Warning. Unconditional match in SecAction/, 1 ],
 	},
 	match_response => {
 		status => qr/^403$/,
@@ -80,7 +80,7 @@
 		SecAction "phase:4,deny,id:500040"
 	),
 	match_log => {
-		error => [ qr/ModSecurity: Warning. Unconditional match in SecAction/, 1 ],
+		error => [ qr/CeleoWAF: Warning. Unconditional match in SecAction/, 1 ],
 	},
 	match_response => {
 		status => qr/^403$/,
@@ -103,7 +103,7 @@
 		SecAction "phase:1,deny,id:500042"
 	),
 	match_log => {
-		error => [ qr/ModSecurity: Access allowed \(phase 1\). Unconditional match in SecAction/, 1 ],
+		error => [ qr/CeleoWAF: Access allowed \(phase 1\). Unconditional match in SecAction/, 1 ],
 	},
 	match_response => {
 		status => qr/^200$/,
@@ -124,7 +124,7 @@
 		SecAction "phase:2,deny,id:500044"
 	),
 	match_log => {
-		error => [ qr/ModSecurity: Access allowed \(phase 2\). Unconditional match in SecAction/, 1 ],
+		error => [ qr/CeleoWAF: Access allowed \(phase 2\). Unconditional match in SecAction/, 1 ],
 	},
 	match_response => {
 		status => qr/^200$/,
@@ -147,7 +147,7 @@
 		SecAction "phase:3,deny,id:500046"
 	),
 	match_log => {
-		error => [ qr/ModSecurity: Access allowed \(phase 3\). Unconditional match in SecAction/, 1 ],
+		error => [ qr/CeleoWAF: Access allowed \(phase 3\). Unconditional match in SecAction/, 1 ],
 	},
 	match_response => {
 		status => qr/^200$/,
@@ -170,7 +170,7 @@
 		SecAction "phase:4,deny,id:500048"
 	),
 	match_log => {
-		error => [ qr/ModSecurity: Access allowed \(phase 4\). Unconditional match in SecAction/, 1 ],
+		error => [ qr/CeleoWAF: Access allowed \(phase 4\). Unconditional match in SecAction/, 1 ],
 	},
 	match_response => {
 		status => qr/^200$/,
@@ -364,7 +364,7 @@
 		SecRule REQUEST_URI "\@streq /test2.txt" "phase:1,redirect:'http://$ENV{SERVER_NAME}:$ENV{SERVER_PORT}/test.txt',id:500001"
 	),
 	match_log => {
-		error => [ qr/ModSecurity: Access denied with redirection to .* using status 302 \(phase 1\)/, 1 ],
+		error => [ qr/CeleoWAF: Access denied with redirection to .* using status 302 \(phase 1\)/, 1 ],
 	},
 	match_response => {
 		status => qr/^200$/,
@@ -385,7 +385,7 @@
 		SecRule REQUEST_URI "\@streq /test2.txt" "phase:2,redirect:'http://$ENV{SERVER_NAME}:$ENV{SERVER_PORT}/test.txt',id:500002"
 	),
 	match_log => {
-		error => [ qr/ModSecurity: Access denied with redirection to .* using status 302 \(phase 2\)/, 1 ],
+		error => [ qr/CeleoWAF: Access denied with redirection to .* using status 302 \(phase 2\)/, 1 ],
 	},
 	match_response => {
 		status => qr/^200$/,
@@ -408,7 +408,7 @@
 		SecRule REQUEST_URI "\@streq /test2.txt" "phase:3,redirect:'http://$ENV{SERVER_NAME}:$ENV{SERVER_PORT}/test.txt',id:500003"
 	),
 	match_log => {
-		error => [ qr/ModSecurity: Access denied with redirection to .* using status 302 \(phase 3\)/, 1 ],
+		error => [ qr/CeleoWAF: Access denied with redirection to .* using status 302 \(phase 3\)/, 1 ],
 	},
 	match_response => {
 		status => qr/^200$/,
@@ -431,7 +431,7 @@
 		SecRule REQUEST_URI "\@streq /test2.txt" "phase:4,redirect:'http://$ENV{SERVER_NAME}:$ENV{SERVER_PORT}/test.txt',id:500004"
 	),
 	match_log => {
-		error => [ qr/ModSecurity: Access denied with redirection to .* using status 302 \(phase 4\)/, 1 ],
+		error => [ qr/CeleoWAF: Access denied with redirection to .* using status 302 \(phase 4\)/, 1 ],
 	},
 	match_response => {
 		status => qr/^200$/,

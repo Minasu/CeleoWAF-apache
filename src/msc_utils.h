@@ -1,7 +1,7 @@
 
-#include <modsecurity/modsecurity.h>
-#include <modsecurity/rules.h>
-#include <modsecurity/intervention.h>
+#include <celeowaf/celeowaf.h>
+#include <celeowaf/rules.h>
+#include <celeowaf/intervention.h>
 
 #include "http_core.h"
 #include "http_request.h"
@@ -14,7 +14,7 @@
 #ifndef _SRC_MSC_UTILS__
 #define _SRC_MSC_UTILS__
 
-#include "mod_security3.h"
+#include "mod_celeowaf.h"
 
 
 int id(const char *fn, const char *format, ...);

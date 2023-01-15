@@ -9,7 +9,7 @@
 		SecStatusEngine On
 	),
 	match_log => {
-		error => [ qr/ModSecurity: StatusEngine call successfully sent/, 1],
+		error => [ qr/CeleoWAF: StatusEngine call successfully sent/, 1],
 		-error => [ qr/Status engine is currently disabled, enable it by set SecStatusEngine to On/, 1],
 	},
 	match_response => {
@@ -32,7 +32,7 @@
 		SecStatusEngine Off
 	),
 	match_log => {
-		-error => [ qr/ModSecurity: StatusEngine call successfully sent/, 1],
+		-error => [ qr/CeleoWAF: StatusEngine call successfully sent/, 1],
 		error => [ qr/Status engine is currently disabled, enable it by set SecStatusEngine to On/, 1],
 	},
 	match_response => {

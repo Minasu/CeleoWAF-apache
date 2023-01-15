@@ -1,7 +1,7 @@
 
-#include <modsecurity/modsecurity.h>
-#include <modsecurity/rules.h>
-#include <modsecurity/intervention.h>
+#include <celeowaf/celeowaf.h>
+#include <celeowaf/rules.h>
+#include <celeowaf/intervention.h>
 
 #include "http_core.h"
 #include "http_request.h"
@@ -14,7 +14,7 @@
 #ifndef _SRC_MSC_FILTERS__
 #define _SRC_MSC_FILTERS__
 
-#include "mod_security3.h"
+#include "mod_celeowaf.h"
 
 apr_status_t output_filter(ap_filter_t *f, apr_bucket_brigade *bb_in);
 

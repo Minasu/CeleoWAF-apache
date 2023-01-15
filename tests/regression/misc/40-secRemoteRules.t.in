@@ -8,10 +8,10 @@
 		SecDebugLog $ENV{DEBUG_LOG}
 		SecDebugLogLevel 9
                 SecRequestBodyAccess On
-                SecRemoteRules 123 "https://www.modsecurity.org/modsecurity-regression-test-secremoterules.txt"
+                SecRemoteRules 123 "https://www.celeowaf.org/celeowaf-regression-test-secremoterules.txt"
 	),
 	match_log => {
-		error => [ qr/ModSecurity: Loaded 1 rule/, 1],
+		error => [ qr/CeleoWAF: Loaded 1 rule/, 1],
 	},
 },
 {
@@ -22,10 +22,10 @@
 		SecDebugLog $ENV{DEBUG_LOG}
 		SecDebugLogLevel 9
                 SecRequestBodyAccess On
-                SecRemoteRules 123 "https://www.modsecurity.org/modsecurity-regression-test-secremoterules.txt"
+                SecRemoteRules 123 "https://www.celeowaf.org/celeowaf-regression-test-secremoterules.txt"
 	),
 	match_log => {
-		error => [ qr/ModSecurity: Warning. Matched phrase \"127.0.0.1\" at REQUEST_FILENAME./, 1],
+		error => [ qr/CeleoWAF: Warning. Matched phrase \"127.0.0.1\" at REQUEST_FILENAME./, 1],
 		debug => [ qr/Matched phrase \"127.0.0.1\" at REQUEST_FILENAME/, 1 ],
 	},
 	match_response => {

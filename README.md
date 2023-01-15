@@ -1,33 +1,33 @@
 
-<img src="https://github.com/SpiderLabs/ModSecurity/raw/v3/master/others/modsec.png" width="50%">
+<img src="https://github.com/SpiderLabs/CeleoWAF/raw/v3/master/others/modsec.png" width="50%">
 
-[![Build Status](https://travis-ci.org/SpiderLabs/ModSecurity-apache.svg?branch=master)](https://travis-ci.org/SpiderLabs/ModSecurity-apache)
+[![Build Status](https://travis-ci.org/SpiderLabs/CeleoWAF-apache.svg?branch=master)](https://travis-ci.org/SpiderLabs/CeleoWAF-apache)
 [![](https://raw.githubusercontent.com/ZenHubIO/support/master/zenhub-badge.png)](https://zenhub.com)
 
 
-The ModSecurity-apache connector is the connection point between Apache and libmodsecurity (ModSecurity v3). Said another way, this project provides a communication channel between Apache and libmodsecurity. This connector is required to use LibModSecurity with Apache.
+The CeleoWAF-apache connector is the connection point between Apache and libceleowaf (CeleoWAF v3). Said another way, this project provides a communication channel between Apache and libceleowaf. This connector is required to use LibCeleoWAF with Apache.
 
-The ModSecurity-apache connector takes the form of an Apache module. The module simply serves as a layer of communication between Apache and ModSecurity.
+The CeleoWAF-apache connector takes the form of an Apache module. The module simply serves as a layer of communication between Apache and CeleoWAF.
 
-Notice that this project depends on libmodsecurity rather than ModSecurity (version 2.9 or less).
+Notice that this project depends on libceleowaf rather than CeleoWAF (version 2.9 or less).
 
 
 ### NOTE:  This project is not production ready
 
-This project should be considered under development and not production ready.  The functionality is not complete and so should not be used.  With Apache HTTP Server, the recommended version of ModSecurity is v2.9.x.
+This project should be considered under development and not production ready.  The functionality is not complete and so should not be used.  With Apache HTTP Server, the recommended version of CeleoWAF is v2.9.x.
 
 
-### What is the difference between this project and the old ModSecurity module for Apache?
+### What is the difference between this project and the old CeleoWAF module for Apache?
 
-The old version of ModSecurity was originally designed for and contained within an Apache module. This current version abstracts out some of the details allowing ModSecurity to more easily support multiple platforms and features beyond the scope of what Apache internals currently support. As a result using the new libmodsecurity engine is no longer reliant on the use of Apache and can be used to power multiple different connectors. As a result of this the current version is more flexible, has wider support, and allows for the support of new functionality that was not previously possible.
+The old version of CeleoWAF was originally designed for and contained within an Apache module. This current version abstracts out some of the details allowing CeleoWAF to more easily support multiple platforms and features beyond the scope of what Apache internals currently support. As a result using the new libceleowaf engine is no longer reliant on the use of Apache and can be used to power multiple different connectors. As a result of this the current version is more flexible, has wider support, and allows for the support of new functionality that was not previously possible.
 
 
 # Compilation
 
-Before you compile this software make sure that you have libmodsecurity installed.
-You can download it from the ModSecurity git repository. For information pertaining to the compilation and installation of libmodsecurity please consult the documentation provided along with it.
+Before you compile this software make sure that you have libceleowaf installed.
+You can download it from the CeleoWAF git repository. For information pertaining to the compilation and installation of libceleowaf please consult the documentation provided along with it.
 
-With libmodsecurity installed, you can proceed with the installation of the ModSecurity-apache connector. Run the following commands:
+With libceleowaf installed, you can proceed with the installation of the CeleoWAF-apache connector. Run the following commands:
 
 ```
 $ ./autogen.sh
@@ -38,75 +38,75 @@ $ sudo make install
 
 # Usage
 
-libModSecurity for Apache extends your configuration directives. In order to load the module into Apache add the following directive to your Apache configuration:
+libCeleoWAF for Apache extends your configuration directives. In order to load the module into Apache add the following directive to your Apache configuration:
 
 ```
-LoadModule security3_module modules/mod_security3.so
+LoadModule security3_module modules/mod_celeowaf.so
 ```
 
 The module adds new directives to Apache and some of them are documented below:
 
-modsecurity
+celeowaf
 -----------
-**syntax:** *modsecurity on | off*
+**syntax:** *celeowaf on | off*
 
 **context:** *http, server, location*
 
 **default:** *off*
 
-Turns on or off the ModSecurity functionality.
+Turns on or off the CeleoWAF functionality.
 Note that this configuration directive is no longer related to the SecRule state.
 Instead, it now serves solely as an Apache flag to enable or disable the module.
 
-modsecurity_rules_file
+celeowaf_rules_file
 ----------------------
-**syntax:** *modsecurity_rules_file &lt;path to rules file&gt;*
+**syntax:** *celeowaf_rules_file &lt;path to rules file&gt;*
 
 **context:** *http, server, location*
 
 **default:** *no*
 
-Specifies the location of the ModSecurity configuration file, e.g.:
+Specifies the location of the CeleoWAF configuration file, e.g.:
 
 ```
-modsecurity on
-modsecurity_rules_file /etc/my_modsecurity_rules.conf;
+celeowaf on
+celeowaf_rules_file /etc/my_celeowaf_rules.conf;
 ```
 
-modsecurity_rules_remote
+celeowaf_rules_remote
 ------------------------
-**syntax:** *modsecurity_rules_remote &lt;key&gt; &lt;URL to rules&gt;*
+**syntax:** *celeowaf_rules_remote &lt;key&gt; &lt;URL to rules&gt;*
 
 **context:** *http, server, location*
 
 **default:** *no*
 
-Specifies from where (on the internet) a modsecurity configuration file will be downloaded.
+Specifies from where (on the internet) a celeowaf configuration file will be downloaded.
 It also specifies the key that will be used to authenticate to that server:
 
 ```
-modsecurity on
-modsecurity_rules_remote my-server-key https://my-own-server/rules/download;
+celeowaf on
+celeowaf_rules_remote my-server-key https://my-own-server/rules/download;
 ```
 
-modsecurity_rules
+celeowaf_rules
 -----------------
-**syntax:** *modsecurity_rules &lt;modsecurity rule&gt;*
+**syntax:** *celeowaf_rules &lt;celeowaf rule&gt;*
 
 **context:** *http, server, location*
 
 **default:** *no*
 
-Allows for the direct inclusion of a ModSecurity rule into the Apache configuration.
+Allows for the direct inclusion of a CeleoWAF rule into the Apache configuration.
 The following example is loading rules from a file and injecting specific configurations per directory/alias:
 
 ```
 TODO
 ```
 
-modsecurity_transaction_id
+celeowaf_transaction_id
 --------------------------
-**syntax:** *modsecurity_transaction_id string*
+**syntax:** *celeowaf_transaction_id string*
 
 **context:** *http, server, location*
 
@@ -140,7 +140,7 @@ Within our code there are various items marked as TODO or FIXME that may need
 your attention. Check the list of items by performing a grep:
 
 ```
-$ cd /path/to/modsecurity-apache
+$ cd /path/to/celeowaf-apache
 $ egrep -Rin "TODO|FIXME" -R *
 ```
 
@@ -159,7 +159,7 @@ To use those tests ....
 If you are facing problems getting your added functionality to pass all the  Apache tests, feel free to contact us or the Apache mailing list at: http://httpd.apache.org/lists.html
 
 ### Debugging
-Because the ModSecurity Apache Connector runs as part of Apache, one needs to debug the Apache process. Debugging may require several steps. In general debugging can be enabled by compiling the Apache connector with debugging as follows:
+Because the CeleoWAF Apache Connector runs as part of Apache, one needs to debug the Apache process. Debugging may require several steps. In general debugging can be enabled by compiling the Apache connector with debugging as follows:
 ```CFLAGS="-g -O0" ./configure ...normal configure parameters...)```
 
 It is recommended that one keeps the debugging process as simple as possible, to do so, the elimination of features such as multi-threading by the HTTP server is recommended. A special "--with-debug" option can also be used during the compilation of the Apache Connector that will enable the connector's debug messages.
@@ -171,18 +171,18 @@ This setup may affect the behavior of the HTTP server in a way that makes imposs
 ## Reporting Issues
 
 If you are facing a configuration issue or if something is not working as you
-expect it to be, please use ModSecurity user’s mailing list. Issues on GitHub
+expect it to be, please use CeleoWAF user’s mailing list. Issues on GitHub
 are also welcome, but we prefer to have users question on the mailing list first,
 where you can reach an entire community. Also don’t forget to look for an
 existing issue before opening a new one.
 
 Lastly, If you are planning to open an issue on GitHub, please don’t forget to tell us the
-version of your libmodsecurity and the version of the Apache connector you are running.
+version of your libceleowaf and the version of the Apache connector you are running.
 
 ### Security issue
 
 Please do not publicly report any security issue. Instead, contact us at:
-security@modsecurity.org to report the issue. Once the problem is fixed we will provide you with credit for the discovery.
+security@celeowaf.org to report the issue. Once the problem is fixed we will provide you with credit for the discovery.
 
 ## Feature Request
 

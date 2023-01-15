@@ -2,19 +2,19 @@
 
 #include <ctype.h>
 
-#include <modsecurity/modsecurity.h>
-#if defined(MODSECURITY_CHECK_VERSION)
-#if MODSECURITY_VERSION_NUM >= 304010
+#include <celeowaf/celeowaf.h>
+#if defined(CELEOWAF_CHECK_VERSION)
+#if CELEOWAF_VERSION_NUM >= 304010
 #define MSC_USE_RULES_SET 1
 #endif
 #endif
 
 #if defined(MSC_USE_RULES_SET)
-#include <modsecurity/rules_set.h>
+#include <celeowaf/rules_set.h>
 #else
-#include <modsecurity/rules.h>
+#include <celeowaf/rules.h>
 #endif
-#include <modsecurity/intervention.h>
+#include <celeowaf/intervention.h>
 
 #include "apr_buckets.h"
 #include "apr_general.h"
@@ -36,11 +36,11 @@
 
 #include "msc_filters.h"
 
-#ifndef _SRC_APACHE_HTTP_MODSECURITY__
-#define _SRC_APACHE_HTTP_MODSECURITY__
+#ifndef _SRC_APACHE_HTTP_CELEOWAF__
+#define _SRC_APACHE_HTTP_CELEOWAF__
 
-#define NOTE_MSR "modsecurity3-tx-context"
-#define MSC_APACHE_CONNECTOR "ModSecurity-Apache v0.1.1-beta"
+#define NOTE_MSR "celeowaf3-tx-context"
+#define MSC_APACHE_CONNECTOR "CeleoWAF-Apache v0.1.1-beta"
 /* #define REQUEST_EARLY */
 #define LATE_CONNECTION_PROCESS
 
@@ -63,7 +63,7 @@ typedef struct
 
 typedef struct
 {
-    ModSecurity *modsec;
+    CeleoWAF *modsec;
 } msc_global;
 
 extern module AP_MODULE_DECLARE_DATA security3_module;
@@ -98,4 +98,4 @@ static void hook_insert_filter(request_rec *r);
 
 static int process_request_headers(request_rec *r, msc_t *msr);
 
-#endif /*  _SRC_APACHE_HTTP_MODSECURITY__ */
+#endif /*  _SRC_APACHE_HTTP_CELEOWAF__ */

@@ -38,8 +38,8 @@ before_script:
   - cd -
   - sudo cpanm --quiet --notest --skip-satisfied CGI::Cookie
   - sudo cpanm --quiet --notest --skip-satisfied Apache::TestRun
-  - git clone https://github.com/SpiderLabs/ModSecurity.git
-  - cd ModSecurity
+  - git clone https://github.com/SpiderLabs/CeleoWAF.git
+  - cd CeleoWAF
   - git checkout v3/master
   - git submodule init
   - git submodule update
@@ -49,12 +49,12 @@ before_script:
   - sudo make install
   - pwd
   - cd -
-  - cd ModSecurity-apache
+  - cd CeleoWAF-apache
   - ./autogen.sh
   - export PATH="/usr/local/apache2/bin/:$PATH"
   - ls -la /usr/local/apache2/bin/
   - ls -la /usr/local/apache2/include/
-  - ./configure --with-apxs=/usr/local/apache2/bin/apxs --with-libmodsecurity=/usr/local/modsecurity
+  - ./configure --with-apxs=/usr/local/apache2/bin/apxs --with-libceleowaf=/usr/local/celeowaf
   - make
   - sudo make install
   - pwd
